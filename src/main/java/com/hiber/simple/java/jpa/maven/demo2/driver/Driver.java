@@ -31,7 +31,6 @@ public class Driver {
         Scanner sc =  new Scanner(System.in);
         //getInputsForMessage(helloWorldDao, sc);
         getInputsForUserProfile(userDao, sc);
-        System.out.println("Outside fun");
     }
 
     public static void getInputsForMessage(HelloWorldDao helloWorldDao, Scanner sc) {
@@ -77,13 +76,11 @@ public class Driver {
                     break;
                 case 3:
                     flag = false;
-                    System.out.println(flag+"--------------------------case3");
                     userDao.closeConnection();
                     break;
             }
 
         }
-        System.out.println("Outside while");
     }
 
 }

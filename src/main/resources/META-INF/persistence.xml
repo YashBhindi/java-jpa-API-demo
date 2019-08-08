@@ -12,13 +12,12 @@ and open the template in the editor.
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <!-- Annotated entity classes -->
         <class>com.hiber.simple.java.jpa.maven.demo2.driver</class>
+      
         <properties>
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/hibernet" />
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-            <property name="hibernate.connection.username" value="postgres" />
-            <property name="hibernate.connection.password" value="argusadmin" />
-            
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/hibernet"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="argusadmin"/>
         </properties>
     </persistence-unit>
 </persistence>
