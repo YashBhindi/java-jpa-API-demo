@@ -9,7 +9,11 @@ package com.hiber.simple.java.jpa.maven.demo2.driver;
  *
  * @author yash
  */
+import com.hiber.simple.java.jpa.maven.demo2.dao.HelloWorldDao;
+import com.hiber.simple.java.jpa.maven.demo2.dao.UserDao;
+import com.hiber.simple.java.jpa.maven.demo2.model.CompositeKey;
 import com.hiber.simple.java.jpa.maven.demo2.model.HelloWorld;
+import com.hiber.simple.java.jpa.maven.demo2.model.UserProfile;
 import java.util.List;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
@@ -21,16 +25,16 @@ import javax.persistence.Query;
 public class Driver {
 
     public static void main(String[] args) {
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("PERSISTENCE");
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
-        Scanner sc = new Scanner(System.in);
-        getInputs(entityManagerFactory, entityManager, sc);
 
+        HelloWorldDao helloWorldDao = new HelloWorldDao();
+        UserDao userDao = new UserDao();
+        Scanner sc =  new Scanner(System.in);
+        //getInputsForMessage(helloWorldDao, sc);
+        getInputsForUserProfile(userDao, sc);
+        System.out.println("Outside fun");
     }
 
-    public static void getInputs(EntityManagerFactory entityManagerFactory, EntityManager entityManager, Scanner sc) {
+    public static void getInputsForMessage(HelloWorldDao helloWorldDao, Scanner sc) {
         boolean flag = true;
         while (flag) {
             System.out.println("Enter the choice:");
@@ -41,42 +45,45 @@ public class Driver {
             int n = sc.nextInt();
             switch (n) {
                 case 1:
-                    addMessage(entityManagerFactory, entityManager, sc);
+                    helloWorldDao.addMessage();
                     break;
                 case 2:
-                    getAllMessages(entityManager);
+                    helloWorldDao.getAllMessages();
                     break;
                 case 3:
                     flag = false;
-                    entityManager.close();
-                    entityManagerFactory.close();
+                    helloWorldDao.closeConnection();
                     break;
             }
 
         }
     }
 
-    public static void addMessage(EntityManagerFactory entityManagerFactory, EntityManager entityManager, Scanner sc) {
-        String msg = new String();
-        System.out.println("Enter message:");
-        msg = sc.next();
-        if (msg == null) {
-            System.out.println("Provide valid message..");
-        } else {
-            HelloWorld helloWorld = new HelloWorld(msg);
-            entityManager.persist(helloWorld);
-            entityManager.getTransaction().commit();
-            System.out.println("Message added..");
+    public static void getInputsForUserProfile(UserDao userDao, Scanner sc) {
+        boolean flag = true;
+        while (flag) {
+            System.out.println("Enter the choice:");
+            System.out.println("1 to add user:");
+            System.out.println("2 to get all user:");
+            System.out.println("3 to exit:");
+
+            int n = sc.nextInt();
+            switch (n) {
+                case 1:
+                    userDao.addUser();
+                    break;
+                case 2:
+                    userDao.getAllUser();
+                    break;
+                case 3:
+                    flag = false;
+                    System.out.println(flag+"--------------------------case3");
+                    userDao.closeConnection();
+                    break;
+            }
+
         }
+        System.out.println("Outside while");
     }
 
-    public static void getAllMessages(EntityManager entityManager) {
-        //retrieve data'
-        Query query = entityManager.createQuery("SELECT m FROM HelloWorld m", HelloWorld.class);
-        List<HelloWorld> message = query.getResultList();
-        for (HelloWorld m : message) {
-            System.out.println("Message:" + m.getMessage());
-        }
-
-    }
 }
